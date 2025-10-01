@@ -1,7 +1,7 @@
 # The classes show how the single linked list works
 
 
-# Create LinkedList Node
+# Create Single LinkedList Node
 class Node:
     def __init__(self, data = None, next = None):
         self.data = data
@@ -55,6 +55,21 @@ class SingleLinkedList:
 
             temp = temp.next
             count += 1
+
+        return
+
+    # Insert after value
+    def insert_after(self, text, data):
+        temp = self.head
+
+        while temp:
+            if temp.data == text:
+                new_node = Node(data)
+                new_node.next = temp.next
+                temp.next = new_node
+                break
+
+            temp = temp.next
 
         return
 
@@ -121,6 +136,18 @@ class SingleLinkedList:
 
         return
 
+    # Delete by value
+    def remove_by_value(self, key):
+        temp = self.head
+
+        while temp:
+            if temp.next.data == key:
+                temp.next = temp.next.next
+                break
+            temp = temp.next
+
+        return
+
     # Get the length of LinkedList
     def length(self):
         count = 0
@@ -147,12 +174,88 @@ class SingleLinkedList:
 
         return
 
-linkedList = SingleLinkedList()
-linkedList.prepend("Syful Islam")
-linkedList.prepend("Abdur Rahman")
-linkedList.prepend("Nayeem Islam")
-linkedList.append("Raisul Juhala")
-linkedList.insert(1, "Bappi Khan")
-linkedList.print()
-linkedList.remove(1)
-linkedList.print()
+# linkedList = SingleLinkedList()
+# linkedList.prepend("Syful Islam")
+# linkedList.prepend("Abdur Rahman")
+# linkedList.prepend("Nayeem Islam")
+# linkedList.append("Raisul Juhala")
+# linkedList.insert(1, "Bappi Khan")
+# linkedList.print()
+# linkedList.insert_after("Bappi Khan", "Taifur Rahman")
+# linkedList.print()
+# linkedList.remove_by_value("Abdur Rahman")
+# linkedList.print()
+
+# Create Double LinkedList Node
+class Nodes:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+class DoubleLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.size = 0
+
+    # Insert at beginning
+    def prepend(self, data):
+        node = Nodes(data)
+
+        if self.head is None:
+            self.head = node
+        else:
+            node.next = self.head
+            self.head.prev = node
+            self.head = node
+
+        return
+
+    # Insert at the ending
+    def append(self, data):
+        node = Nodes(data)
+
+        if self.head is None:
+            self.head = node
+        else:
+            temp = self.head
+            while temp.next:
+                temp = temp.next
+            temp.next = node
+            node.prev = temp
+
+        return
+    # Print forward data
+    def print_fd(self):
+        temp = self.head
+
+        while temp:
+            print(temp.data + "-->", end="")
+            temp = temp.next
+
+        print()
+        return
+
+    # Print backward data
+    def print_bd(self):
+        temp = self.head
+
+        while temp.next is not None:
+            temp = temp.next
+
+        while temp is not None:
+            print(temp.data + "-->", end="")
+            temp = temp.prev
+
+        print()
+        return
+
+dblinkedlist = DoubleLinkedList()
+dblinkedlist.prepend("DU")
+dblinkedlist.prepend("RU")
+dblinkedlist.prepend("CU")
+dblinkedlist.print_fd()
+dblinkedlist.append("JU")
+dblinkedlist.print_fd()
+dblinkedlist.print_bd()
