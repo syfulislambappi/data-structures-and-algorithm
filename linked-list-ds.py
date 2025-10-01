@@ -1,97 +1,158 @@
-# The class shows how the single linked list works
-from operator import index
+# The classes show how the single linked list works
 
 
-# Create the Node of LinkedList
+# Create LinkedList Node
 class Node:
-    def __init__(self, data=None):
+    def __init__(self, data = None, next = None):
         self.data = data
-        self.next = None
+        self.next = next
 
-# Create LinkedList functionalities
-class LinkedList:
+class SingleLinkedList:
     def __init__(self):
-        self.head = None # Empty LinkedList
+        self.head = None
 
-    # Store node at the begining
+    # Insert node at the beginning
     def prepend(self, data):
-        node = Node(data) # Create node for LinkedList
-        node.next = self.head # Store previous Nodes if available or empty as references in the next
-        self.head = node # Store the new node to the LinkedList
-
-    # Store node at the ending
-    def append(self, data):
-        node = Node(data) # Create node for LinkedList
-        if self.head is None: # Check if the LinkedList is empty
-            self.head = node # Store the node to empty Linkedlist
-        last = self.head # Store the Existing Linkedlist
-        while last.next: # Traverse till last node
-            last = last.next
-
-        last.next = node # Store the node to the last node of next
-
-    # Create LinkedList from the array of elements
-    def insert_values(self, values):
-        for value in values:
-            self.append(value)
-
-    # Get length of the LinkedList
-    def length(self):
-        count = 0
-        last = self.head
-        while last:
-            last = last.next
-            count += 1
-        print(count)
+        new_node = Node(data) # Create new node
+        new_node.next = self.head # Store the reference of next node to the present node
+        self.head = new_node # Insert node at the beginning
         return
 
-    # Remove Node of a LinkedList with given index
-    def remove_at(self, index):
+    # Insert at the end
+    def append(self, data):
+        temp = self.head
+
+        # If LinkedList is empty store the data at the beginning
+        if temp is None:
+            self.prepend(data)
+
+        # Traverse through to last next pointer
+        while temp.next:
+            temp = temp.next
+
+        temp.next = Node(data) # Store node to the last next pointer
+        return
+
+    # Insert at specific index
+    def insert(self, i, data):
+        temp = self.head # Store LinkedList for modification
 
         # Check the validity of index number
-        if 0 > index >= self.length():
-            raise  Exception("Invalid index number")
+        if 0 > i > self.length():
+            raise Exception("Invalid index number")
 
-        temp = self.head
-        # If index is 0 it can remove the node
-        if index == 0:
-            self.head= temp.next
-            temp = None
-            return
-
-        # Delete node while index is greater than 0
+        # Traverse through temp list to insert at specific index
         count = 0
         while temp:
-            if count == index - 1:
+            if i == 0:
+                self.prepend(data)
+                break
+            if count == i - 1:
+                new_node = Node(data) # Create new node
+                new_node.next = temp.next # Store reference to the rest of the node to the new node
+                temp.next = new_node # Store new node at the specified index
+                break
+
+            temp = temp.next
+            count += 1
+
+        return
+
+    # Update at specific index
+    def update(self, i, data):
+        temp = self.head
+
+        # Check the validity of index
+        if 0 > i > self.length():
+            raise Exception("Invalid index number")
+
+        # Update the data
+        count = 0
+        while temp:
+            if count == i:
+                temp.data = data
+                break
+            temp = temp.next
+            count += 1
+
+        return
+
+    # Delete at beginning
+    def remove_first(self):
+        temp = self.head
+
+        # Remove first item
+        while temp:
+            temp = temp.next
+            break
+        self.head = temp
+
+        return
+
+    # Delete at ending
+    def remove_last(self):
+        temp = self.head
+
+        # Remove from the last index
+        while temp:
+            if temp.next.next is None:
                 temp.next = temp.next.next
                 break
             temp = temp.next
-            count += 1
 
-    # Insert node at specific location
-    def insert_at(self, index, data):
-        if 0 > index >= self.length():
-            raise Exception("Invalid index number")
+        return
 
-        if index == 0:
-            self.prepend(data)
+    # Delete at specific index
+    def remove(self, i):
+        temp = self.head
+        if 0 > i > self.length():
+            raise Exception("Invalid index")
+
+        if i == 0:
+            self.remove_first()
 
         count = 0
-        temp = self.head
         while temp:
-            if count == index - 1:
-                node = Node(data)
-                node.next = temp.next
-                temp.next = node
-                break
+            if count == i - 1:
+                temp.next = temp.next.next
+
             temp = temp.next
             count += 1
 
-    # Print the element of LinkedList
+        return
+
+    # Get the length of LinkedList
+    def length(self):
+        count = 0
+
+        while self.head:
+            self.head = self.head.next
+            count += 1
+
+        return count
+
+    # Print Linkedlist data
     def print(self):
-        llstr = "" # empty string to store the element of LinkedList from the node
-        last = self.head # Store the LinkedList
-        while last: # Check while self.head is true
-            llstr += str(last.data) + "-->" # Append the element from node
-            last = last.next # Assign the next node to the last variable
-        print(llstr)
+        temp = self.head # Store LinkedList into the temporary variable
+
+        # Show the message if LinkedList is empty
+        if temp is None:
+            print("LinkedList is empty")
+
+        # Traverse through the LinkedList
+        while temp:
+            print(temp.data + "-->", end="")
+            temp = temp.next
+        print()
+
+        return
+
+linkedList = SingleLinkedList()
+linkedList.prepend("Syful Islam")
+linkedList.prepend("Abdur Rahman")
+linkedList.prepend("Nayeem Islam")
+linkedList.append("Raisul Juhala")
+linkedList.insert(1, "Bappi Khan")
+linkedList.print()
+linkedList.remove(1)
+linkedList.print()
